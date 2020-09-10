@@ -15,7 +15,7 @@ int main(void) {
     char inFile[MAX], outFile[MAX];
     int i, j;
     char * fullText = (char *) malloc(44), * string = (char *) malloc(44);
-    const char *arr[strlen(fullText)];        //blocks are stored here
+    const char *arr[strlen(fullText)];                                       //blocks are stored here
     char stream[1000]="";
     
     //get the input file name from the user
@@ -44,26 +44,24 @@ int main(void) {
             return 0;
     }
     
+    // reads and gets data from input file
     fullText = readFile(inFile);
-    printf("\n%s",fullText);
     
-    putchar('\n');
-    
+    // converts data to binary
     for (i = 0; i < strlen(fullText); i++) {
         for (j = 0; j < 8; j++) {
             string[j] = (fullText[i] & (1 << j)) ? '1' : '0';
         }
-        string[j]=' ';
+        string[j]=' ';                              // separator between blocks
         
-        strrev(string);
-        arr[i] = string;
+        strrev(string);                             // reverses binary
+        arr[i] = string;                            // stores binary into an array
         
-        printf("%s\n",arr[i]);
-        strcat(stream, arr[i]);
+        strcat(stream, arr[i]);                     // concatenates elements of array to form stream of data
     }
-    printf("%s\n\n\n",stream);
-    parityCheck(stream);
+    parityCheck(stream);                            // 2D Parity Calculation: displays stream with appended parity bits
     
+    // close files
     fclose(fp1);
     fclose(fp2);
     return 0;
@@ -76,7 +74,7 @@ char *readFile(char *fileName) {
     int c;
 
     if (file == NULL)
-        return NULL; //could not open file
+        return NULL;            // could not open file
 
     code = malloc(1000);
 
@@ -85,12 +83,13 @@ char *readFile(char *fileName) {
         code[n++] = (char) c;
     }
 
-    // don't forget to terminate with the null character
+    // null terminator
     code[n] = '\0';
 
     return code;
 }
 
+// reverses string
 char *strrev(char *str) {
       char *p1, *p2;
 
