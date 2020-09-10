@@ -8,6 +8,11 @@
 
 #ifndef parityCalculation_h
 #define parityCalculation_h
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define MAX 256000
+
 
 // INPUT: /Users/marxette/Desktop/DIGDACM/input.txt
 // OUTPUT: /Users/marxette/Desktop/DIGDACM/output.txt
@@ -17,9 +22,9 @@ void concatenate(char p[], char q[]);
 char * parityCheck(char stream[]) {
     int i, one, z = 0, j = 0;
     char *blocks[strlen(stream)/8];                             // blocks of data
-    char straightStream[1000];                                  // continuous data stream without separator
-    char *combination = (char *) malloc(44);                    // stream to be appended with parity bits
-    char parityBitsRight[100], parityBitsBottom[100];
+    char straightStream[MAX];                                  // continuous data stream without separator
+    char *combination = (char *) malloc(440);                    // stream to be appended with parity bits
+    char parityBitsRight[MAX], parityBitsBottom[MAX];
     char *string = NULL, parityBit, newString[9];
     char twoD[strlen(straightStream)/8][8];                     // binary data Rows and Columns
     char * block = strtok(stream, " ");
@@ -68,10 +73,10 @@ char * parityCheck(char stream[]) {
         strcat(combination,newString);
         
         // for checking
-        /*printf("\n\n%s",string);
-        printf("\n%i ones",one);
-        printf("\nParity bit is %c",parityBit);
-        printf("\nNew String is %s",newString);*/
+        //printf("\n\n%s",string);
+        //printf("\n%i ones",one);
+        //printf("\nParity bit is %c",parityBit);
+        //printf("\nNew String is %s",newString);
     }
     one = 0;
     
@@ -106,7 +111,7 @@ char * parityCheck(char stream[]) {
     
     strcat(combination,parityBitsBottom);
     strcpy(stream, combination);
-    //printf("\n%s\n\n", stream);
+    printf("\n%s\n\n", stream);
     
     // frees malloc
     free(combination);
