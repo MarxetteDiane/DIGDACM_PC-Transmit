@@ -1,3 +1,11 @@
+//
+//  parityCalculation.h
+//  DIGDACM
+//
+//  Created by Marxette Diane Cabato on 9/10/20.
+//  Copyright © 2020 Marxette Diane Cabato. All rights reserved.
+//
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
