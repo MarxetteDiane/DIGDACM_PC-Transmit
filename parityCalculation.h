@@ -25,7 +25,7 @@ char * parityCheck(char stream[]) {
     char straightStream[MAX];                                  // continuous data stream without separator
     char *combination = (char *) malloc(440);                    // stream to be appended with parity bits
     char parityBitsRight[MAX], parityBitsBottom[MAX];
-    char *string = NULL, parityBit, newString[9];
+    char *string = NULL, parityBit, newString[MAX];
     char twoD[strlen(straightStream)/8][8];                     // binary data Rows and Columns
     char * block = strtok(stream, " ");
     straightStream[0] = '\0';                                   // removes unwanted characters at the beginning
@@ -111,7 +111,7 @@ char * parityCheck(char stream[]) {
     
     strcat(combination,parityBitsBottom);
     strcpy(stream, combination);
-    printf("\n%s\n\n", stream);
+    //printf("\n%s\n\n", stream);
     
     // frees malloc
     free(combination);
