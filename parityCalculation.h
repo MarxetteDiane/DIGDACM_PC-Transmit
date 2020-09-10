@@ -16,75 +16,69 @@ void concatenate(char p[], char q[]);
 
 void parityCheck(char stream[]) {
     int i, one, z = 0, j = 0;
-    //char *arr[4] = {"00101101","10110110","10011000","11110111"};
-    char *arr[strlen(stream)/8];
-    char straightStream[1000];
-    straightStream[0] = '\0';
+    char *blocks[strlen(stream)/8];                 // blocks of data
+    char straightStream[1000];                      // continuous data stream without separator
+    straightStream[0] = '\0';                       // removes unwanted characters at the beginning
     
-    char * token = strtok(stream, " ");
-    // loop through the string to extract all other tokens
+    char * block = strtok(stream, " ");
+    
+    // loop through the string to extract data blocks
     i = 0;
-    while( token != NULL ) {
-        //printf( "%s", token ); //printing each token
-        arr[i] = token;
-        strcat(straightStream, token);
-        token = strtok(NULL, " ");
+    while( block != NULL ) {
+        blocks[i] = block;
+        strcat(straightStream, block);
+        block = strtok(NULL, " ");
         i++;
     }
-    arr[i] = NULL;
+    blocks[i] = NULL;
     
-    printf("\n%s",straightStream);
-    for (i = 0; i < strlen(straightStream)/8; i++) {
-        printf("\n%s",arr[i]);
-    }
-    
-    char *combination = (char *) malloc(44);                    // Stream to be transmitted
+    char *combination = (char *) malloc(44);                    // stream to be appended with parity bits
     char parityBitsRight[100], parityBitsBottom[100];
     char *string = NULL, parityBit, newString[9];
-    char twoD[strlen(straightStream)/8][8];       //Rows and Columns
+    char twoD[strlen(straightStream)/8][8];                     // binary data Rows and Columns
     
     combination[0]='\0';
     parityBitsRight[0]='\0';
     parityBitsBottom[0]='\0';
-    
-    printf("\n\n");
-    
-    // ROW
+        
+    // Right Parity Bits [ROWS]
     for (z = 0; z < strlen(straightStream)/8; z++) {
         one = 0;
-        string = arr[z];
+        string = blocks[z];
         for (i = 0; i < 8; i++) {
             if (string[i] == '1') {
                 one++;
             }
-            //insert bits into 2D array
+            //insert bits into 2D arrays
             twoD[z][i] = string[i];
         }
         
         strcpy(newString,string);
-        //check whether odd or even
-        if (one % 2 == 0) {                 //even
-            //strcat(newString,"0");
+        
+        // checks parity whether odd or even
+        if (one % 2 == 0) {                                 // even: 0 parity bit
             concatenate(newString, "0");
             strcat(parityBitsRight,"0");
             parityBit = '0';
-        } else {                            //odd
-            //strcat(newString,"1");
+        } else {                                            // odd: 1 parity bit
             strcat(parityBitsRight,"1");
             concatenate(newString, "1");
             parityBit = '1';
         }
         
+        // appends block with parity bit into stream
         strcat(combination,newString);
-        printf("\n\n%s",string);
+        
+        // for checking
+        /*printf("\n\n%s",string);
         printf("\n%i ones",one);
         printf("\nParity bit is %c",parityBit);
-        printf("\nNew String is %s",newString);
+        printf("\nNew String is %s",newString);*/
     }
     
-    printf("\nParity Bits Right: %s", parityBitsRight);
-    
     one = 0;
+    
+    // Bottom Parity Bits [COLUMNS]
     for (j = 0; j < 8; j++) {
         for (i = 0; i < strlen(straightStream)/8; i++) {
             if (twoD[i][j] == '1') {
@@ -100,6 +94,7 @@ void parityCheck(char stream[]) {
         one = 0;
     }
     
+    // counts number of 1s in bottom parity bits
     for (i = 0; i < strlen(parityBitsBottom); i++) {
         if (parityBitsBottom[i] == '1') {
             one++;
@@ -113,22 +108,13 @@ void parityCheck(char stream[]) {
     }
     
     strcat(combination,parityBitsBottom);
-    printf("\nFULL STRING: %s\n\n", combination);
-    /*
-    STEPS:
-        Row:
-            1. Get parity bits of each row.
-        Column:
-            1. Get parity for string[0] -> string[7] for arr[i].
-            2. Get parity bit for the right side parity bits.
-            
-        Combination:
-            1. newString arr[i].
-    */
+    printf("\n%s\n\n", combination);
     
+    // frees malloc
     free(combination);
 }
 
+// DIY concatenate lol
 void concatenate(char p[], char q[]) {
    int c = 0, d = 0;
     
