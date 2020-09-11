@@ -59,8 +59,8 @@ int main(void) {
     
     // reads and gets data from input file
     fullText = readFile(inFile);
-    printf("\n%s\n",fullText);
-    /*--------------------------*/
+    //printf("\n%s\n",fullText);
+
     textLength = sizeof(fullText);
     binaryLength = textLength * 9;      // 8 binary digits + 1 space separator
     binary = malloc(binaryLength + 1);  // + 1 null terminator
@@ -68,24 +68,11 @@ int main(void) {
         exit(1);
     
     textToBinary(fullText, textLength, binary, binaryLength);
-    printf("Your binary encoding is:\n%s\n", binary);
-    
-    /*--------------------------*/
-    // converts data to binary
-    /*for (i = 0; i < strlen(fullText); i++) {
-        for (j = 0; j < 8; j++) {
-            string[j] = (fullText[i] & (1 << j)) ? '1' : '0';
-        }
-        string[j]=' ';                              // separator between blocks
-        
-        strrev(string);                             // reverses binary
-        arr[i] = string;                            // stores binary into an array
-        
-        strcat(stream, arr[i]);                     // concatenates elements of array to form stream of data
-    }*/
+    //printf("Your binary encoding is:\n%s\n", binary);
     
     strcpy(output,parityCheck(binary));             // 2D Parity Calculation: gets data stream with appended parity bits
     printf("\n%s\n",output);
+    fprintf(fp2, "%s", binary);                     // outputs in output file
     
     free(binary);
     
