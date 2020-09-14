@@ -9,7 +9,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include "ParityCalculator.h"
+#include "ParityCalculation.h"
 #define MAX 256000
 
 char *readFile(char *fileName);
