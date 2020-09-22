@@ -1,29 +1,80 @@
 //
-//  parityCalculation.h
-//  DIGDACM
+//  main.c
+//  parityCalculation
 //
-//  Created by Marxette Diane Cabato on 9/10/20.
+//  Created by Marxette Diane Cabato on 9/22/20.
 //  Copyright © 2020 Marxette Diane Cabato. All rights reserved.
 //
 
-#ifndef parityCalculation_h
-#define parityCalculation_h
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #define MAX 256000
 
-
-// INPUT: /Users/marxette/Desktop/DIGDACM/input.txt
-// OUTPUT: /Users/marxette/Desktop/DIGDACM/output.txt
-
+char *storingLongStr(char *str, unsigned int maxLength, unsigned int currSize);
+char * parityCheck(char stream[]);
 void concatenate(char p[], char q[]);
+
+int main(void) {
+    char * input = malloc(44*9), * output = malloc(MAX), temp[397], partial[MAX];
+    int fullLength, i, j = 0;
+    
+    //input = storingLongStr(input, maxLength, currSize);
+    scanf("%[^\n]s", input);
+    
+    fullLength = strlen(input);                     //counts string length
+    
+    if (fullLength < 396) {
+        strcpy(output, parityCheck(input));
+    } else {
+        while (fullLength > 0) {
+            for(i=0; i < 396; i++) {
+                strncat(temp, &input[j], 1);
+                j++;
+            }
+            temp[j] = '\0';
+            printf("\n%s\n",temp);
+            strcpy(partial, parityCheck(temp));
+            strcat(output, temp);
+            strcpy(temp, "");
+            fullLength = fullLength - 396;
+        }
+    }
+    
+    printf("\n%s\n",output);
+    
+    free(input);
+    free(output);
+    return 0;
+}
+
+// Dynamic allocation for the inputted data
+char *storingLongStr(char *str, unsigned int maxLength, unsigned int currSize) {
+    if (str != NULL) {
+        int c = EOF;
+        unsigned int i = 0;
+
+        // Accept user input until hit enter or end of file
+        while ((c = getchar()) != '\n' && c != EOF) {
+            str[i++] = (char) c;
+
+            // If i reaches maximum size, realloc activated
+            if (i == currSize) {
+                currSize = i + maxLength;
+                str = realloc(str, currSize);
+            }
+        }
+
+        str[i] = '\0';
+    }
+    return str;
+}
 
 char * parityCheck(char stream[]) {
     int i, one, z = 0, j = 0;
     char *blocks[strlen(stream)/8];                             // blocks of data
     char straightStream[MAX];                                  // continuous data stream without separator
-    char *combination = (char *) malloc(440);                    // stream to be appended with parity bits
+    char *combination = (char *) malloc(MAX);                    // stream to be appended with parity bits
     char parityBitsRight[MAX], parityBitsBottom[MAX];
     char *string = NULL, parityBit, newString[MAX];
     char twoD[strlen(straightStream)/8][8];                     // binary data Rows and Columns
@@ -38,6 +89,7 @@ char * parityCheck(char stream[]) {
         block = strtok(NULL, " ");
         i++;
     }
+    printf("\n%s\n",straightStream);
     blocks[i] = NULL;
     
     combination[0]='\0';
@@ -71,12 +123,6 @@ char * parityCheck(char stream[]) {
         
         // appends block with parity bit into stream
         strcat(combination,newString);
-        
-        // for checking
-        //printf("\n\n%s",string);
-        //printf("\n%i ones",one);
-        //printf("\nParity bit is %c",parityBit);
-        //printf("\nNew String is %s",newString);
     }
     one = 0;
     
@@ -115,7 +161,7 @@ char * parityCheck(char stream[]) {
     
     // frees malloc
     free(combination);
-    
+
     return stream;
 }
 
@@ -134,5 +180,3 @@ void concatenate(char p[], char q[]) {
    }
    p[c] = '\0';
 }
-
-#endif /* parityCalculation_h */
