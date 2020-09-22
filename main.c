@@ -9,7 +9,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include "ParityCalculation.h"
 #define MAX 256000
 
 char *readFile(char *fileName);
@@ -18,13 +17,14 @@ void textToBinary(char *text, int textLength, char *binary, int binaryLength);
 void decimalToBinary(int decimal, char *octet);
 char *strrev(char *str);
 
+// INPUT: /Users/marxette/XCode/DIGDACM/input.txt
+// OUTPUT: /Users/marxette/XCode/DIGDACM/output.txt
+
 int main(void) {
     FILE *fp1, *fp2;
-    char inFile[MAX], outFile[MAX], partial[MAX], output[MAX];
-    char string[45];
+    char inFile[MAX], outFile[MAX];
     char * fullText = (char *) malloc(440); //* string = (char *) malloc(440);
     char *binary;
-    int i, j = 0;
     int textLength, binaryLength;
     
     //get the input file name from the user
@@ -56,41 +56,18 @@ int main(void) {
     // reads and gets data from input file
     fullText = readFile(inFile);
     
-    int fullLength = strlen(fullText);
+    //int fullLength = strlen(fullText);
     
-    if (fullLength < 44) {
-        textLength = sizeof(fullText);
-        binaryLength = textLength * 9;      // 8 binary digits + 1 space separator
-        binary = malloc(binaryLength + 1);  // + 1 null terminator
-        if(binary == NULL)
-            exit(1);
-        
-        textToBinary(fullText, textLength, binary, binaryLength);
-        printf("\n%s\n", fullText);
-        strcpy(output,parityCheck(binary));             // 2D Parity Calculation: gets data stream with appended parity bits
-    } else {                                            //divides string into 44 characters
-        while (fullLength > 0) {
-            for(i=0; i < 44; i++) {
-                strncat(string, &fullText[j], 1);
-                j++;
-            }
-            string[44] = '\0';
-            textLength = sizeof(string);
-            binaryLength = textLength * 9;      // 8 binary digits + 1 space separator
-            binary = malloc(binaryLength + 1);  // + 1 null terminator
-            if(binary == NULL)
-                exit(1);
-            
-            textToBinary(string, textLength, binary, binaryLength);
-            strcpy(partial,parityCheck(binary));             // 2D Parity Calculation: gets data stream with appended parity bits
-            strcat(output, partial);
-            strcpy(string, "");
-            fullLength = fullLength - 44;
-        }
-    }
+    textLength = sizeof(fullText);
+    binaryLength = textLength * 9;      // 8 binary digits + 1 space separator
+    binary = malloc(binaryLength + 1);  // + 1 null terminator
+    if(binary == NULL)
+        exit(1);
     
-    printf("\n%s\n",output);
-    fprintf(fp2, "%s", output);                     // outputs in output file
+    textToBinary(fullText, textLength, binary, binaryLength);
+
+    printf("\n%s\n",binary);
+    fprintf(fp2, "%s", binary);                     // outputs in output file
     
     free(binary);
     
