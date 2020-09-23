@@ -18,11 +18,10 @@ void decimalToBinary(int decimal, char *octet);
 char *strrev(char *str);
 
 // INPUT: /Users/marxette/XCode/DIGDACM/input.txt
-// OUTPUT: /Users/marxette/XCode/DIGDACM/output.txt
 
 int main(void) {
-    FILE *fp1, *fp2;
-    char inFile[MAX], outFile[MAX];
+    FILE *fp1;
+    char inFile[MAX];
     char * fullText = (char *) malloc(440); //* string = (char *) malloc(440);
     char *binary;
     int textLength, binaryLength;
@@ -31,25 +30,12 @@ int main(void) {
     printf("Enter your input file name: ");
     scanf("%s", inFile);
 
-    // get the output filename from the user
-    printf("Enter your output file name: ");
-    scanf("%s", outFile);
-
     // open the source file in read mode
     fp1 = fopen(inFile, "r");
 
     // error handling
     if (!fp1) {
             printf("Unable to open the input file!!\n");
-            return 0;
-    }
-
-    // open the target file in binary write mode
-    fp2 = fopen(outFile, "wb");
-
-    // error handling
-    if (!fp2) {
-            printf("Unable to open the output file!!\n");
             return 0;
     }
     
@@ -67,13 +53,11 @@ int main(void) {
     textToBinary(fullText, textLength, binary, binaryLength);
 
     printf("\n%s\n",binary);
-    fprintf(fp2, "%s", binary);                     // outputs in output file
     
     free(binary);
     
     // close files
     fclose(fp1);
-    fclose(fp2);
     return 0;
 }
 
