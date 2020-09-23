@@ -11,14 +11,16 @@
 #include<string.h>
 #define MAX 256000
 
+char *storingLongStr(char *str, unsigned int maxLength, unsigned int currSize);
 char * parityCheck(char stream[]);
 void concatenate(char p[], char q[]);
 
 int main(void) {
     char * input = malloc(MAX), * output = malloc(MAX), temp[397], partial[MAX];
-    int fullLength, i, j = 0;
+    int fullLength, i, j = 0, maxLength = 128, currSize = 0;
     
-    scanf("%[^\n]s", input);
+    //scanf("%[^\n]s", input);
+    input = storingLongStr(input, maxLength, currSize);
     
     fullLength = strlen(input);                     //counts string length
     
@@ -44,6 +46,29 @@ int main(void) {
     free(output);
     return 0;
 }
+
+// Dynamic allocation for the inputted data
+char *storingLongStr(char *str, unsigned int maxLength, unsigned int currSize) {
+    if (str != NULL) {
+        int c = EOF;
+        unsigned int i = 0;
+
+        // Accept user input until hit enter or end of file
+        while ((c = getchar()) != '\n' && c != EOF) {
+            str[i++] = (char) c;
+
+            // If i reaches maximum size, realloc activated
+            if (i == currSize) {
+                currSize = i + maxLength;
+                str = realloc(str, currSize);
+            }
+        }
+
+        str[i] = '\0';
+    }
+    return str;
+}
+
 
 char * parityCheck(char stream[]) {
     int i, one, z = 0, j = 0;
