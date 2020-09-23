@@ -19,11 +19,12 @@ int main(void) {
     char * input = malloc(MAX), * output = malloc(MAX), temp[397], partial[MAX];
     int fullLength, i, j = 0, maxLength = 128, currSize = 0;
     
-    //scanf("%[^\n]s", input);
     input = storingLongStr(input, maxLength, currSize);
     
     fullLength = strlen(input);                     //counts string length
     
+    temp[0] = '\0';
+    output[0] = '\0';
     if (fullLength < 396) {
         strcpy(output, parityCheck(input));
     } else {
@@ -32,7 +33,6 @@ int main(void) {
                 strncat(temp, &input[j], 1);
                 j++;
             }
-            temp[396] = '\0';
             strcpy(partial, parityCheck(temp));
             strcat(output, temp);
             strcpy(temp, "");
@@ -68,7 +68,6 @@ char *storingLongStr(char *str, unsigned int maxLength, unsigned int currSize) {
     }
     return str;
 }
-
 
 char * parityCheck(char stream[]) {
     int i, one, z = 0, j = 0;
@@ -156,7 +155,6 @@ char * parityCheck(char stream[]) {
     
     strcat(combination,parityBitsBottom);
     strcpy(stream, combination);
-    //printf("\n%s\n\n", stream);
     
     // frees malloc
     free(combination);
