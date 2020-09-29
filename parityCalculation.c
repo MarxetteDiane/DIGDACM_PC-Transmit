@@ -3,7 +3,7 @@
 //  parityCalculation
 //
 //  Created by Marxette Diane Cabato on 9/22/20.
-//  Copyright Â© 2020 Marxette Diane Cabato. All rights reserved.
+//  Copyright © 2020 Marxette Diane Cabato. All rights reserved.
 //
 
 #include<stdio.h>
@@ -16,15 +16,31 @@ char * parityCheck(char stream[]);
 void concatenate(char p[], char q[]);
 
 int main(void) {
-    char * input = malloc(MAX), * output = malloc(MAX), temp[397], partial[MAX];
+    char * input = malloc(MAX), * output = malloc(MAX), temp[397], partial[MAX], * input2 = malloc(MAX);
     int fullLength, i, j = 0, maxLength = 128, currSize = 0;
     
     input = storingLongStr(input, maxLength, currSize);
-    
-    fullLength = strlen(input);                     //counts string length
-    
+
+	fullLength = strlen(input);                     //counts string length
+	
     temp[0] = '\0';
     output[0] = '\0';
+    input2[0] = '\0';
+    
+    while (fullLength > 0) {
+        for(i=0; i < 8; i++) {
+            strncat(temp, &input[j], 1);
+            j++;
+        }
+        strcat(input2, temp);
+        strcat(input2," ");
+        strcpy(temp, "");
+        fullLength = fullLength - 8;
+    }
+    
+    strcpy(input,input2);
+    fullLength = strlen(input);                     //counts string length
+    
     if (fullLength < 396) {
         strcpy(output, parityCheck(input));
     } else {
@@ -40,7 +56,7 @@ int main(void) {
         }
     }
     
-    printf("\n%s\n",output);
+    printf("%s",output);
     
     free(input);
     free(output);
